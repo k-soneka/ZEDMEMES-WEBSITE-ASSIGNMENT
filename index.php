@@ -12,7 +12,7 @@ session_start();
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/ZedMemes--CS-361-Group-7-Assignment-/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="light-theme">
     <!-- Navigation -->
@@ -227,7 +227,7 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Custom JavaScript -->
-    <script src="/ZedMemes--CS-361-Group-7-Assignment-/assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
 

@@ -116,6 +116,36 @@ $(document).ready(function () {
         //location.reload();
       });
     });
+
+    $('#upload-form').submit(function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  $.ajax({
+    url: 'php/upload_meme.php', // path to your PHP uploader
+    type: 'POST',
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (response) {
+      console.log('Upload response:', response); // 🔍 debugging
+
+      if (response.status === 'success') {
+        $('#upload-modal').modal('close');
+        showAnimatedToast('Meme uploaded successfully!', 'check');
+        $('#upload-form')[0].reset();
+        loadMemes(); // reload the memes
+      } else {
+        showAnimatedToast(response.message || 'Upload failed!', 'error');
+      }
+    },
+    error: function () {
+      showAnimatedToast('An error occurred during upload.', 'error');
+    }
+  });
+});
+
   
     function updateAuthUI(isLoggedIn, username = '') {
       if (isLoggedIn) {
