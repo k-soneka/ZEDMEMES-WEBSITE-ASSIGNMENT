@@ -1,0 +1,88 @@
+=== NEW REQUEST ===
+SESSION:
+Array
+(
+    [user] => 1
+    [username] => Manal
+)
+POST:
+Array
+(
+    [caption] => 
+    [userID] => 1
+)
+FILES:
+Array
+(
+    [meme] => Array
+        (
+            [name] => Feel free to praise Frieren.jpeg
+            [full_path] => Feel free to praise Frieren.jpeg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\php3CF.tmp
+            [error] => 0
+            [size] => 34189
+        )
+
+)
+Move to: C:\xampp\htdocs\ZEDMEMES-WEBSITE-ASSIGNMENT\php/../uploads/68763ea4f41f3_Feel free to praise Frieren.jpeg
+Result: true
+=== NEW REQUEST ===
+SESSION:
+Array
+(
+    [user] => 1
+    [username] => Manal
+)
+POST:
+Array
+(
+    [caption] => 
+    [userID] => 1
+)
+FILES:
+Array
+(
+    [meme] => Array
+        (
+            [name] => me core.jpeg
+            [full_path] => me core.jpeg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\phpB4C7.tmp
+            [error] => 0
+            [size] => 45261
+        )
+
+)
+Move to: C:\xampp\htdocs\ZEDMEMES-WEBSITE-ASSIGNMENT\php/../uploads/68763f555ca72_me core.jpeg
+Result: true
+=== NEW REQUEST ===
+SESSION:
+Array
+(
+    [user] => 1
+    [username] => Manal
+)
+POST:
+Array
+(
+    [caption] => 
+    [userID] => 1
+)
+FILES:
+Array
+(
+    [meme] => Array
+        (
+            [name] => download (7).jpeg
+            [full_path] => download (7).jpeg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\phpCC54.tmp
+            [error] => 0
+            [size] => 67311
+        )
+
+)
+Move to: C:\xampp\htdocs\ZEDMEMES-WEBSITE-ASSIGNMENT\php/../uploads/6876406178e9e_download (7).jpeg
+Result: true
+SQL insert succeeded.

@@ -123,7 +123,7 @@ $(document).ready(function () {
   const formData = new FormData(this);
 
   $.ajax({
-    url: 'php/upload_meme.php', // path to your PHP uploader
+    url: 'php/upload_meme.php',
     type: 'POST',
     data: formData,
     contentType: false,
@@ -172,7 +172,7 @@ $(document).ready(function () {
         if (response.status === 'success' && response.data.length > 0) {
           response.data.forEach((meme, index) => {
             const memeCard = `
-              <div class="meme-card" data-meme-id="${meme.id}" style="animation-delay: ${index * 0.1}s">
+              <div class="meme-card" data-meme-id="${meme.memeID}" style="animation-delay: ${index * 0.1}s">
                 <div class="meme-image-container">
                   <img src="${meme.file_path}" alt="${meme.caption}" class="meme-image">
                 </div>
