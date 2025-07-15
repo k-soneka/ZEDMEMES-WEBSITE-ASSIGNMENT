@@ -11,7 +11,7 @@ $sql = "
   SELECT meme.memeID, meme.file_path, meme.caption, meme.upload_date, user.username,
   (
   SELECT COUNT(*)
-  FROM reactions
+  FROM reaction
   WHERE reaction.memeID = meme.memeID AND reaction.reaction_type = 'like'
   ) AS like_count
   FROM meme
