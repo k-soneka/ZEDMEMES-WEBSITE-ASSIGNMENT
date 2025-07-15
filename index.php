@@ -17,9 +17,9 @@ session_start();
 <body class="light-theme">
     <!-- Navigation -->
     <nav>
-            <?php if (isset($_SESSION['username'])): ?>
-            <li><span class="white-text">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span></li>
-        <?php endif; ?>
+        <!--<?php if (isset($_SESSION['username'])): ?>
+        <li><span class="white-text">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span></li>
+        <?php endif; ?>-->
         <div class="nav-wrapper container">
             <a href="#" class="brand-logo">ZedMemes</a>
             <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -228,6 +228,49 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Custom JavaScript -->
     <script src="assets/js/script.js"></script>
+
+    <script>
+    $(document).ready(function () {
+    $('#login-form').submit(function (e) {
+        e.preventDefault();
+
+        const email = $('#login-email').val();
+        const password = $('#login-password').val();
+
+        $.ajax({
+        url: 'php/login.php',
+        method: 'POST',
+        data: {
+            email: email,
+            password: password
+        },
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+            // Show success feedback
+            M.toast({ html: '✅ Login successful!', classes: 'green' });
+
+            // Update UI
+            $('#auth-buttons, #mobile-auth-buttons').hide();
+            $('#user-buttons, #mobile-user-buttons, #mobile-fab').show();
+            $('#username-label').text(response.user_name);
+            $('#welcome-msg').show();
+
+            // Close modal
+            $('#login-modal').modal('close');
+            } else {
+            M.toast({ html: '❌ ' + response.message, classes: 'red' });
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            M.toast({ html: '❌ Server error.', classes: 'red' });
+        }
+        });
+    });
+    });
+    </script>
+    
 </body>
 </html>
 
