@@ -4,10 +4,9 @@ $(document).ready(function () {
 
   console.log("✅ script.js loaded");
 
+  //:::::::::::::::::::::::::::::::: UPLOADING A MEME ::::::::::::::::::::::::::::::::\\
   $('#upload-form').submit(function (e) {
-    e.preventDefault(); // ⬅️ This prevents page reload
-
-    console.log("🧪 Upload form submitted");
+    e.preventDefault();
 
     const formData = new FormData(this);
 
@@ -18,7 +17,7 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       success: function (response) {
-        console.log('✅ Upload response:', response);
+        console.log('Upload response:', response);
         if (response.status === 'success') {
           $('#upload-modal').modal('close');
           showAnimatedToast('Meme uploaded successfully!', 'check');
@@ -29,7 +28,7 @@ $(document).ready(function () {
         }
       },
       error: function (xhr) {
-        console.error('❌ AJAX error:', xhr.responseText);
+        console.error('AJAX error:', xhr.responseText);
         showAnimatedToast('An error occurred during upload.', 'error');
       }
     });
@@ -79,26 +78,32 @@ $(document).ready(function () {
     }
   });
 
-  checkSession();
-  M.AutoInit(); // OR:
-  $('.modal').modal();
-  loadMemes();
-
-
-  function checkSession() {
-    $.get('php/session_status.php', function (response) {
-      if (response.loggedIn) {
-        currentUserID = parseInt(response.userID); // 👈 store it
-        updateAuthUI(true, response.username);
-      } else {
-        updateAuthUI(false);
-      }
-    }, 'json');
-  }
-
   let currentUserID = null;
 
 
+function checkSession() {
+  console.log("📡 Running checkSession()");
+
+  $.get('php/session_status.php', function (response) {
+    console.log("✅ Session response:", response);
+    if (response.loggedIn) {
+      currentUserID = parseInt(response.userID);
+      console.log("✔ Logged in as ID:", currentUserID);
+      updateAuthUI(true, response.username);
+    } else {
+      console.log("❌ Not logged in");
+      updateAuthUI(false);
+    }
+
+    loadMemes();
+  }, 'json');
+}
+
+  checkSession();
+  M.AutoInit(); // OR:
+  $('.modal').modal();
+
+  //:::::::::::::::::::::::::::::::: LOGGING IN ::::::::::::::::::::::::::::::::\\
   $('#login-form').submit(function (e) {
     e.preventDefault();
     const email = $('#login-email').val();
@@ -106,6 +111,7 @@ $(document).ready(function () {
 
     $.post('php/login.php', { email, password }, function (response) {
       if (response.status === 'success') {
+        currentUserID = parseInt(response.userID);
         updateAuthUI(true, response.username);
         $('#login-modal').modal('close');
         showAnimatedToast('Logged in successfully!', 'check');
@@ -116,6 +122,7 @@ $(document).ready(function () {
     }, 'json');
   });
 
+  //:::::::::::::::::::::::::::::::: SIGNING UP ::::::::::::::::::::::::::::::::\\
   $('#signup-form').submit(function (e) {
     e.preventDefault();
 
@@ -138,6 +145,7 @@ $(document).ready(function () {
     }, function (response) {
       console.log('Signup response:', response); // 🔍 add this temporarily
       if (response.status === 'success') {
+        currentUserID = parseInt(response.userID);
         updateAuthUI(true, username);
         $('#signup-modal').modal('close');
         showAnimatedToast('Signup successful!', 'check');
@@ -147,7 +155,7 @@ $(document).ready(function () {
     }, 'json');
   });
 
-
+  //:::::::::::::::::::::::::::::::: LOGGING OUT ::::::::::::::::::::::::::::::::\\
   $('#logout-link, #mobile-logout-link').click(function (e) {
     e.preventDefault();
     $.get('php/logout.php', function () {
@@ -177,13 +185,14 @@ $(document).ready(function () {
     }
   }
 
+  //:::::::::::::::::::::::::::::::: LOADING MEMES ::::::::::::::::::::::::::::::::\\
   function loadMemes() {
     $('#meme-grid').css('opacity', 0).empty();
 
     $.get('php/fetch_memes.php', function (response) {
       if (response.status === 'success' && response.data.length > 0) {
         response.data.forEach((meme, index) => {
-          const isOwner = currentUserID === parseInt(meme.userID); // 👈 Check if user owns this meme
+          const isOwner = currentUserID === parseInt(meme.userID);
 
           const memeCard = `
               <div class="meme-card" data-meme-id="${meme.memeID}" style="animation-delay: ${index * 0.1}s">
@@ -246,6 +255,13 @@ $(document).ready(function () {
     const memeId = button.closest('.meme-card').data('meme-id');
     const action = button.data('action');
 
+    console.log("🧪 Reacting:", {
+      memeId,
+      action,
+      userID: currentUserID
+    });
+    console.log(`ID: ${currentUserID}`);
+
     $.ajax({
       url: 'php/react.php',
       method: 'POST',
@@ -257,21 +273,22 @@ $(document).ready(function () {
       contentType: 'application/json',
       dataType: 'json',
       success: function (response) {
-        if (response.success) {
-          const countEl = button.find('.reaction-count');
-          let count = parseInt(countEl.text()) || 0;
+  const countEl = button.find('.reaction-count');
 
-          if (response.removed) {
-            button.removeClass('active');
-            countEl.text(count - 1);
-          } else if (response.added) {
-            button.addClass('active');
-            countEl.text(count + 1);
-          }
-        } else {
-          showAnimatedToast(response.error || 'Something went wrong', 'error');
-        }
-      },
+  if (response.removed) {
+    button.removeClass('active');
+  } else if (response.added) {
+    button.addClass('active');
+  }
+
+  // Update count regardless
+  if (response.like_count !== undefined) {
+    countEl.text(response.like_count);
+  } else if (response.upvote_count !== undefined) {
+    countEl.text(response.upvote_count);
+  }
+}
+,
       error: function () {
         showAnimatedToast('Reaction failed. Try again.', 'error');
       }
