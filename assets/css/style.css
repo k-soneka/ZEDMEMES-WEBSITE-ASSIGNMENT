@@ -449,11 +449,11 @@ nav a:not(.btn):not(.btn-flat) {
 
 /* Upload Button */
 #upload-btn, #mobile-fab {
-    background-color: var(--success-color) !important;
+    background-color: var(--success-color);
 }
 
 #upload-btn:hover, #mobile-fab:hover {
-    background-color: #00b34a !important;
+    background-color: #00b34a;
 }
 
 /* Floating Action Button */
